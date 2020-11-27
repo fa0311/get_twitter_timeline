@@ -112,6 +112,7 @@ class twitter_timeline_get {
                     'tweet': {
                         'text': data_instance.find('p.timeline-Tweet-text').text(),
                         'textemoji': tweet_text_emoji,
+                        'code': data_instance.find('p.timeline-Tweet-text').html(),
                         'list': tweet_text_list
                     },
                     'share': {

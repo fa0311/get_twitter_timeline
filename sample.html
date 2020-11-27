@@ -1,131 +1,291 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>SAMPLE</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <script src="assets//jquery-3.4.1.min.js"></script>
     <script src="assets/get_twitter_timeline.js"></script>
     <style>
-        p {
-            margin: 0px;
-        }
+      p {
+        margin: 0px;
+      }
 
-        span {
-            display: inline-block;
-            margin: 0px 5px 0px 0px;
-        }
+      span {
+        display: inline-block;
+        margin: 0px 5px 0px 0px;
+      }
 
-        .box {
-            display: inline-block;
-            margin: 0px;
-        }
+      .box {
+        display: inline-block;
+        margin: 0px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        /*インスタンスの作成*/
-        var twitter_id = "faa0311"; //取得したいTwitterID
-        var fn1 = function () { //取得したあとの処理
-            console.log("読み込みが完了しました");
-            output(); //output関数を実行 (下記で定義)
+      /*インスタンスの作成*/
+      var twitter_id = "faa0311"; //取得したいTwitterID
+      var fn1 = function () {
+        //取得したあとの処理
+        console.log("読み込みが完了しました");
+        output(); //output関数を実行 (下記で定義)
+      };
+      var jquery_instance = $("body"); //jqueryのインスタンスを指定 この要素の最後(append)に埋め込みリンクを展開する 指定しないとbodyの最後になる
+
+      var twitter = new twitter_timeline_get(twitter_id, fn1, jquery_instance); //第1引数 必須 第2引数 任意 第3引数 任意
+
+      function more() {
+        var fn2 = function () {
+          //取得したあとの処理
+          console.log("読み込みが完了しました");
+          output(); //output関数を実行 (下記で定義)
         };
-        var jquery_instance = $('body'); //jqueryのインスタンスを指定 この要素の最後(append)に埋め込みリンクを展開する 指定しないとbodyの最後になる
+        $("#print").remove();
+        twitter.loadmore(fn2); //第1引数 任意
+      }
 
-        var twitter = new twitter_timeline_get(twitter_id, fn1,
-            jquery_instance); //第1引数 必須 第2引数 任意 第3引数 任意
-
-
-        function more() {
-            var fn2 = function () { //取得したあとの処理
-                console.log("読み込みが完了しました");
-                output(); //output関数を実行 (下記で定義)
-            };
-            $('#print').remove();
-            twitter.loadmore(fn2); //第1引数 任意
+      /*変数の中を見やすく表示するために使用*/
+      function escape_html(string) {
+        if (typeof string !== "string") {
+          return string;
         }
+        return string.replace(/[&'`"<>]/g, function (match) {
+          return {
+            "&": "&amp;",
+            "'": "&#x27;",
+            "`": "&#x60;",
+            '"': "&quot;",
+            "<": "&lt;",
+            ">": "&gt;",
+          }[match];
+        });
+      }
 
-        function output() {
-            console.log(twitter.tweet); //ツイートを取得
-            $('body')
-                .append('<div id="print"></div>')
-            let i = 0;
-            while (twitter.tweet_length > i) {
-                $('#print')
-                    .append('<p><span>key：</span>' + i + '</p>')
-                    .append('<p><span>〇〇さんがリツイート：</span>' + twitter.tweet[i].retweetCredit + '</p>')
-                    .append('<p><span>〇〇さんがリプライ：</span>' + twitter.tweet[i].inReplyTo + '</p>')
-                    .append('<p><span>ユーザー名：</span>' + twitter.tweet[i].user.name + '</p>')
-                    .append('<p><span>ユーザーid：</span>' + twitter.tweet[i].user.id + '</p>')
-                    .append('<p><span>プロフィール画像：</span>' + twitter.tweet[i].user.img + '</p>')
-                    .append('<p><span>ユーザーのリンク：</span>' + twitter.tweet[i].user.link + '</p>')
-                    .append('<p><span>ツイートのリンク：</span>' + twitter.tweet[i].link + '</p>')
-                    .append('<p><span>ツイートされた時間：</span>' + twitter.tweet[i].time.label + '</p>')
-                    .append('<p><span>ツイートされた時間(ISO8601)：</span>' + twitter.tweet[i].time.datetime + '</p>')
-                    .append('<p><span>ツイートされた時間(日付と時間)：</span>' + twitter.tweet[i].time.title + '</p>')
-                    .append('<p><span>ラベル：</span>' + twitter.tweet[i].label + '</p>')
-                    .append('<p><span>ツイートの内容：</span>' + twitter.tweet[i].tweet.text + '</p>')
-                    .append('<p><span>ツイートの内容(絵文字あり)：</span>' + twitter.tweet[i].tweet.textemoji + '</p>')
-                let ii = 0;
-                while (twitter.tweet[i].tweet.list.length > ii) {
-                    let type = twitter.tweet[i].tweet.list[ii].type;
-                    $('#print')
-                        .append('<br>')
-                        .append('<p><span>文字のタイプ：</span>' + type + '</p>');
-                    if (type == "text") {
-                        /*文字*/
-                        $('#print').append('<p><span>通常のテキスト：</span>' + twitter.tweet[i].tweet.list[ii].text + '</p>');
-                    } else if (type == "img") {
-                        /*絵文字*/
-                        $('#print')
-                            .append('<p><span>絵文字：</span>' + twitter.tweet[i].tweet.list[ii].alt + '</p>')
-                            .append('<p><span>絵文字の名前：</span>' + twitter.tweet[i].tweet.list[ii].title + '</p>')
-                            .append('<p><span>絵文字のラベル：</span>' + twitter.tweet[i].tweet.list[ii].arialabel + '</p>')
-                            .append('<p><span>絵文字の画像リンク：</span>' + twitter.tweet[i].tweet.list[ii].src + '</p>');
-                    } else if (type == "br") {
-                        /*改行*/
-                    } else if (type == "tag") {
-                        /*ハッシュタグとかメンション*/
-                        $('#print').append('<p><span>データのタイプ：</span>' + twitter.tweet[i].tweet.list[ii].data + '</p>')
-                            .append('<p><span>文字：</span>' + twitter.tweet[i].tweet.list[ii].value + '</p>')
-                            .append('<p><span>リンク：</span>' + twitter.tweet[i].tweet.list[ii].link + '</p>');
-                    } else if (type == "link") {
-                        /*リンク*/
-                        $('#print').append('<p><span>リンク：</span>' + twitter.tweet[i].tweet.list[ii].link + '</p>');
-                    }
-                    ii++;
-                }
-                $('#print')
-                    .append('<br>')
-                    .append('<p><span>いいねリンク：</span>' + twitter.tweet[i].share.like.link + '</p>')
-                    .append('<p><span>種類：</span>' + twitter.tweet[i].share.like.datascribe + '</p>')
-                    .append('<p><span>リツイートリンク：</span>' + twitter.tweet[i].share.Twitter.link + '</p>')
-                    .append('<p><span>種類：</span>' + twitter.tweet[i].share.Twitter.datascribe + '</p>')
-                    .append('<p><span>Facebook共有リンク：</span>' + twitter.tweet[i].share.Facebook.link + '</p>')
-                    .append('<p><span>種類：</span>' + twitter.tweet[i].share.Facebook.datascribe + '</p>')
-                    .append('<p><span>LinkedIn共有リンク：</span>' + twitter.tweet[i].share.LinkedIn.link + '</p>')
-                    .append('<p><span>種類：</span>' + twitter.tweet[i].share.LinkedIn.datascribe + '</p>')
-                    .append('<p><span>Tumblr共有リンク：</span>' + twitter.tweet[i].share.Tumblr.link + '</p>')
-                    .append('<p><span>種類：</span>' + twitter.tweet[i].share.Tumblr.datascribe + '</p>')
-                ii = 0;
-                while (twitter.tweet[i].img[ii]) {
-                    $('#print')
-                        .append('<br>')
-                        .append('<p><span>代替テキスト：</span>' + twitter.tweet[i].img[0].alt + '</p>')
-                        .append('<p><span>画像リンク：</span>' + twitter.tweet[i].img[0].src + '</p>')
-                        .append('<p><span>タイトル：</span>' + twitter.tweet[i].img[0].title + '</p>')
-                    ii++;
-                }
-                $('#print')
-                    .append('<br>---------------------------<br>');
-                i++;
+      /*出力*/
+      function output() {
+        console.log(twitter.tweet); //ツイートを取得
+        $("body").append('<div id="print"></div>');
+        let i = 0;
+        while (twitter.tweet_length > i) {
+          $("#print")
+            .append("<p><span>key：</span>" + i + "</p>")
+            .append(
+              "<p><span>〇〇さんがリツイート：</span>" +
+                twitter.tweet[i].retweetCredit +
+                "</p>"
+            )
+            .append(
+              "<p><span>〇〇さんがリプライ：</span>" +
+                twitter.tweet[i].inReplyTo +
+                "</p>"
+            )
+            .append(
+              "<p><span>ユーザー名：</span>" +
+                twitter.tweet[i].user.name +
+                "</p>"
+            )
+            .append(
+              "<p><span>ユーザーid：</span>" + twitter.tweet[i].user.id + "</p>"
+            )
+            .append(
+              "<p><span>プロフィール画像：</span>" +
+                twitter.tweet[i].user.img +
+                "</p>"
+            )
+            .append(
+              "<p><span>ユーザーのリンク：</span>" +
+                twitter.tweet[i].user.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートのリンク：</span>" +
+                twitter.tweet[i].link +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートされた時間：</span>" +
+                twitter.tweet[i].time.label +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートされた時間(ISO8601)：</span>" +
+                twitter.tweet[i].time.datetime +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートされた時間(日付と時間)：</span>" +
+                twitter.tweet[i].time.title +
+                "</p>"
+            )
+            .append(
+              "<p><span>ラベル：</span>" + twitter.tweet[i].label + "</p>"
+            )
+            .append(
+              "<p><span>ツイートの内容：</span>" +
+                twitter.tweet[i].tweet.text +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートの内容(絵文字あり)：</span>" +
+                twitter.tweet[i].tweet.textemoji +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートの内容(html)：</span>" +
+                twitter.tweet[i].tweet.code +
+                "</p>"
+            )
+            .append(
+              "<p><span>ツイートの内容(html/エスケープ済み)：</span>" +
+                escape_html(twitter.tweet[i].tweet.code) +
+                "</p>"
+            );
+          let ii = 0;
+          while (twitter.tweet[i].tweet.list.length > ii) {
+            let type = twitter.tweet[i].tweet.list[ii].type;
+            $("#print")
+              .append("<br>")
+              .append("<p><span>文字のタイプ：</span>" + type + "</p>");
+            if (type == "text") {
+              /*文字*/
+              $("#print").append(
+                "<p><span>通常のテキスト：</span>" +
+                  twitter.tweet[i].tweet.list[ii].text +
+                  "</p>"
+              );
+            } else if (type == "img") {
+              /*絵文字*/
+              $("#print")
+                .append(
+                  "<p><span>絵文字：</span>" +
+                    twitter.tweet[i].tweet.list[ii].alt +
+                    "</p>"
+                )
+                .append(
+                  "<p><span>絵文字の名前：</span>" +
+                    twitter.tweet[i].tweet.list[ii].title +
+                    "</p>"
+                )
+                .append(
+                  "<p><span>絵文字のラベル：</span>" +
+                    twitter.tweet[i].tweet.list[ii].arialabel +
+                    "</p>"
+                )
+                .append(
+                  "<p><span>絵文字の画像リンク：</span>" +
+                    twitter.tweet[i].tweet.list[ii].src +
+                    "</p>"
+                );
+            } else if (type == "br") {
+              /*改行*/
+            } else if (type == "tag") {
+              /*ハッシュタグとかメンション*/
+              $("#print")
+                .append(
+                  "<p><span>データのタイプ：</span>" +
+                    twitter.tweet[i].tweet.list[ii].data +
+                    "</p>"
+                )
+                .append(
+                  "<p><span>文字：</span>" +
+                    twitter.tweet[i].tweet.list[ii].value +
+                    "</p>"
+                )
+                .append(
+                  "<p><span>リンク：</span>" +
+                    twitter.tweet[i].tweet.list[ii].link +
+                    "</p>"
+                );
+            } else if (type == "link") {
+              /*リンク*/
+              $("#print").append(
+                "<p><span>リンク：</span>" +
+                  twitter.tweet[i].tweet.list[ii].link +
+                  "</p>"
+              );
             }
-            $('#print')
-                .append('<p onclick="more()">更に読み込む</p>');
+            ii++;
+          }
+          $("#print")
+            .append("<br>")
+            .append(
+              "<p><span>いいねリンク：</span>" +
+                twitter.tweet[i].share.like.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>種類：</span>" +
+                twitter.tweet[i].share.like.datascribe +
+                "</p>"
+            )
+            .append(
+              "<p><span>リツイートリンク：</span>" +
+                twitter.tweet[i].share.Twitter.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>種類：</span>" +
+                twitter.tweet[i].share.Twitter.datascribe +
+                "</p>"
+            )
+            .append(
+              "<p><span>Facebook共有リンク：</span>" +
+                twitter.tweet[i].share.Facebook.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>種類：</span>" +
+                twitter.tweet[i].share.Facebook.datascribe +
+                "</p>"
+            )
+            .append(
+              "<p><span>LinkedIn共有リンク：</span>" +
+                twitter.tweet[i].share.LinkedIn.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>種類：</span>" +
+                twitter.tweet[i].share.LinkedIn.datascribe +
+                "</p>"
+            )
+            .append(
+              "<p><span>Tumblr共有リンク：</span>" +
+                twitter.tweet[i].share.Tumblr.link +
+                "</p>"
+            )
+            .append(
+              "<p><span>種類：</span>" +
+                twitter.tweet[i].share.Tumblr.datascribe +
+                "</p>"
+            );
+          ii = 0;
+          while (twitter.tweet[i].img[ii]) {
+            $("#print")
+              .append("<br>")
+              .append(
+                "<p><span>代替テキスト：</span>" +
+                  twitter.tweet[i].img[0].alt +
+                  "</p>"
+              )
+              .append(
+                "<p><span>画像リンク：</span>" +
+                  twitter.tweet[i].img[0].src +
+                  "</p>"
+              )
+              .append(
+                "<p><span>タイトル：</span>" +
+                  twitter.tweet[i].img[0].title +
+                  "</p>"
+              );
+            ii++;
+          }
+          $("#print").append("<br>---------------------------<br>");
+          i++;
         }
+        $("#print").append('<p onclick="more()">更に読み込む</p>');
+      }
     </script>
-</body>
-
+  </body>
 </html>
