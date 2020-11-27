@@ -1,7 +1,7 @@
 # get_twitter_timeline
 
-Twitter のタイムラインを取得するライブラリです
-js だけで動いてるので web のクライアントだけで動きます
+Twitter のタイムラインを取得するライブラリです<br>
+js だけで動いてるので web のクライアントだけで動きます<br>
 このリポジトリに含まれる easy_get_twitter_timeline.js を使うと非プログラマでもサイトに Twitter の情報を掲載することが出来ます
 <br><br>
 
