@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SAMPLE</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="assets//jquery-3.4.1.min.js"></script>
+    <script src="assets/get_twitter_timeline.js"></script>
+    <script src="assets/easy_get_twitter_timeline.js"></script>
+    <style>
+      /*余白を消す*/
+      p {
+        margin: 0px;
+      }
+      /*内容がなかった時に要素を削除*/
+      /*内容がなかった要素にはt-errorが自動で付きます*/
+      .general .t-error {
+        display: none;
+      }
+
+      /*ロード完了まで要素を削除*/
+      .general t-article {
+        display: none;
+      }
+      /*ロードが完了した要素にはt-loadedが自動で付きます*/
+      .general t-article.t-loaded {
+        display: block;
+      }
+
+      /*ツイートをcodeで表示するなら絵文字のサイズを指定しましょう*/
+      .Emoji {
+        width: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <get-twitter-timeline user="faa0311">
+      <t-article number="1">
+        <p><t-div>retweetCredit</t-div></p>
+        <p><t-div>inReplyTo</t-div></p>
+
+        <p><t-div>user_name</t-div></p>
+        <p><t-div>user_id</t-div></p>
+        <p><t-div>user_img</t-div></p>
+        <p><t-div>user_link</t-div></p>
+        <p><t-div>link</t-div></p>
+        <p><t-div>time_label</t-div></p>
+        <p><t-div>time_datetime</t-div></p>
+        <p><t-div>time_title</t-div></p>
+        <p><t-div>label</t-div></p>
+        <p><t-div>text</t-div></p>
+        <p><t-div>tweet</t-div></p>
+
+        <p><t-div>share_like_link</t-div></p>
+        <p><t-div>share_like_datascribe</t-div></p>
+        <p><t-div>share_Twitter_link</t-div></p>
+        <p><t-div>share_Twitter_datascribe</t-div></p>
+        <p><t-div>share_Facebook_link</t-div></p>
+        <p><t-div>share_Facebook_datascribe</t-div></p>
+        <p><t-div>share_LinkedIn_link</t-div></p>
+        <p><t-div>share_LinkedIn_datascribe</t-div></p>
+        <p><t-div>share_Tumblr_link</t-div></p>
+        <p><t-div>share_Tumblr_datascribe</t-div></p>
+
+        <p><t-div>img_1_alt</t-div></p>
+        <p><t-div>img_1_src</t-div></p>
+        <p><t-div>img_1_title</t-div></p>
+        <p><t-div>img_2_alt</t-div></p>
+        <p><t-div>img_2_src</t-div></p>
+        <p><t-div>img_2_title</t-div></p>
+        <p><t-div>img_3_alt</t-div></p>
+        <p><t-div>img_3_src</t-div></p>
+        <p><t-div>img_3_title</t-div></p>
+        <p><t-div>img_4_alt</t-div></p>
+        <p><t-div>img_4_src</t-div></p>
+        <p><t-div>img_4_title</t-div></p>
+      </t-article>
+    </get-twitter-timeline>
+
+    <p>
+      ------------------------------------------------------------------------------------------------
+    </p>
+    <div class="general">
+      <get-twitter-timeline user="faa0311">
+        <t-article number="1">
+          <p><img t-div="src" src="user_img" /><t-div>name</t-div></p>
+          <p><t-div>code</t-div></p>
+          <p><a t-div="href" href="share_like_link">いいね</a></p>
+          <p><a t-div="href" href="share_Twitter_link">リツイート</a></p>
+        </t-article>
+        <p>------------</p>
+        <t-article number="2">
+          <p><img t-div="src" src="user_img" /><t-div>name</t-div></p>
+          <p><t-div>code</t-div></p>
+          <p><a t-div="href" href="share_like_link">いいね</a></p>
+          <p><a t-div="href" href="share_Twitter_link">リツイート</a></p>
+        </t-article>
+        <p>------------</p>
+        <t-article number="3">
+          <p><img t-div="src" src="user_img" /><t-div>name</t-div></p>
+          <p><t-div>code</t-div></p>
+          <p><a t-div="href" href="share_like_link">いいね</a></p>
+          <p><a t-div="href" href="share_Twitter_link">リツイート</a></p>
+        </t-article>
+        <p>------------</p>
+        <t-article number="4">
+          <p><img t-div="src" src="user_img" /><t-div>name</t-div></p>
+          <p><t-div>code</t-div></p>
+          <p><a t-div="href" href="share_like_link">いいね</a></p>
+          <p><a t-div="href" href="share_Twitter_link">リツイート</a></p>
+        </t-article>
+      </get-twitter-timeline>
+    </div>
+  </body>
+</html>
