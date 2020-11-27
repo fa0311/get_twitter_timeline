@@ -76,7 +76,7 @@ class twitter_timeline_get {
 
                     /*引用RTの元ツイ ハッシュタグ メンション*/
                     if (tweet_instance.prop('tagName') == 'A') {
-                        if (tweet_instance.attr('data-scribe')) {
+                        if (tweet_instance.attr('data-scribe') == "element:hashtag") {
                             /*ハッシュタグ メンション*/
                             tweet_text_list.push({
                                 'data': tweet_instance.attr('data-scribe'),
@@ -86,15 +86,17 @@ class twitter_timeline_get {
                             });
                             tweet_text_emoji += tweet_instance.find('span.PrettyLink-prefix').text() + tweet_instance.find('span.PrettyLink-value').text();
 
-                        } else {
-                            /*url*/
-                            tweet_text_list.push({
-                                'link': tweet_instance.prop('href'),
-                                'type': 'link'
-                            });
+                        } else if (tweet_instance.attr('data-scribe') == "element:url") {
+                            {
+                                /*url*/
+                                tweet_text_list.push({
+                                    'link': tweet_instance.prop('href'),
+                                    'type': 'link'
+                                });
+                                tweet_text_emoji += tweet_instance.prop('href');
+                            }
                         }
                     }
-
                 });
 
                 /*まとめ*/
