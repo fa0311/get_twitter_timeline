@@ -1,7 +1,7 @@
 # get_twitter_timeline
 
-Twitter のタイムラインを取得するライブラリです
-js だけで動いてるので web のクライアントだけで動きます
+Twitter のタイムラインを取得するライブラリです<br>
+js だけで動いてるので web のクライアントだけで動きます<br>
 このリポジトリに含まれる easy_get_twitter_timeline.js を使うと非プログラマでもサイトに Twitter の情報を掲載することが出来ます
 <br><br>
 
@@ -57,6 +57,8 @@ jquery と get_twitter_timeline と easy_get_twitter_timeline をロードしま
 
 ### use
 
+get-twitter-timeline に id、t-article に番号を指定してください
+
 ```html
 <get-twitter-timeline user="faa0311">
   <!-- get-twitter-timelineのuserに取得したいTwitterIdを指定してください -->
@@ -75,6 +77,8 @@ jquery と get_twitter_timeline と easy_get_twitter_timeline をロードしま
 </get-twitter-timeline>
 ```
 
+汎用型
+
 ```html
 <get-twitter-timeline user="faa0311">
   <t-article number="1">
@@ -86,6 +90,8 @@ jquery と get_twitter_timeline と easy_get_twitter_timeline をロードしま
 </get-twitter-timeline>
 ```
 
+css の仕様
+
 ```css
 /*内容がなかった要素にはt-errorが自動で付きます*/
 .t-error {
@@ -94,6 +100,8 @@ jquery と get_twitter_timeline と easy_get_twitter_timeline をロードしま
 .t-loaded {
 }
 ```
+
+汎用型
 
 ```css
 /*内容がない要素を削除*/
