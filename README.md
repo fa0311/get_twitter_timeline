@@ -30,7 +30,7 @@ var twitter = new twitter_timeline_get("faa0311", function () {
 });
 ```
 
-ロードの時間が考慮されていないため下記の例だとエラーになる可能性があります<br>
+ロードは非同期で行われるため下記の例だとエラーになります<br>
 
 ```js
 var twitter = new twitter_timeline_get("faa0311");
